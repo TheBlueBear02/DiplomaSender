@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diploma Auto-Sender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Diploma Auto-Sender</h1>
+      <p>Automate your diploma sending process with ease.</p>
+    </header>
+
+    <!-- Upload Diploma Template -->
+    <section class="card">
+        <h2 class="upload-title">Upload Diploma Template</h2>
+        <div class="upload-card">
+          <div class="upload-box">
+            <img width="60px" height="70px" src="static/icons/upload-diploma.svg">
+            <p>Drag and drop your diploma template here</p>
+            <p class="supported-formats">Supported formats: PDF, PNG</p>
+            <button class="browse-button">Browse Files</button>
+          </div>
+        </div>
+    </section>
+
+    <!-- Name placement on diploma -->
+    <section class="card">
+      <h2>Name Placement</h2>
+      <div class="preview-box">
+        <img src="path/to/preview.jpg" alt="Diploma Preview" class="preview-image">
+      </div>
+      <div class="name-coordinates">
+        <table class="name-position-table">
+            <tr>
+                <td><p>X Position:</p></td>
+                <td><p>Y Position:</p></td>
+            </tr>
+            <tr>
+                <td><input class="name-position-input" type="number" name="x-position" placeholder="Enter X position" value="50"></td>
+                <td><input class="name-position-input" type="number" name="y-position" placeholder="Enter y position" value="50"></td>
+            </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- Upload Recipient List -->
+    <section class="card">
+      <h2>Upload Recipient List</h2>
+      <div class="upload-card">
+        <div class="upload-box">
+          <img width="60px" height="70px" src="static/icons/csv-file-icon.svg">
+          <p>Upload your CSV file with names and emails</p>
+          <p class="upload-info">Supported formats: .csv, .xlsx</p>
+          <button class="browse-button">Upload CSV</button>
+        </div>
+      </div>
+      <div class="recipient-list-div">
+        <h4>Preview</h4>
+        <table class="recipient-list-table">
+            <tr>
+                <th style="width: 10%;"><p>Select</p></th>
+                <th><p>Name</p></th>
+                <th><p>Email</p></th>
+            </tr>
+            <tr>
+                <td><input style="width: 40px;" type="checkbox"></td>
+                <td><p>name1</p></td>
+                <td><p>email1</p></td>
+            </tr>
+        </table>
+      </div>
+    </section>
+    
+    <!-- Email Configuration -->
+    <section class="card">
+      <h2>Email Configuration</h2>
+      <div class="email-info-box">
+        <p>Email Subject</p>
+        <input type="text" id="email-subject" placeholder="Your Diploma is Here!">
+        
+        <p>Email Body</p>
+        <textarea id="email-body" placeholder="Write your email content here..."></textarea>
+      </div>
+      <button class="connect-email-btn"><img style="width: 40px; height: 60px; margin-right: 10px;" src="static\icons\email-icon.svg">Connect Email</button>
+    </section>
+
+    <!-- Send Section -->
+    <section class="card">
+      <h2>Review & Send</h2>
+      <div class="progressbar-box">
+        <p style="margin: 0;">Sending Status</p>
+        <progress class="sending-progressbar" value="32" max="100"> 32% </progress>
+      </div>
+
+      <button class="send-btn">Send Diplomas (2)</button>
+    </section>
+
+    <section class="card">
+      <h2>Status Dashboard</h2>
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John Doe</td>
+            <td style="color: orange;">Pending</td>
+            <td>2024-02-20 14:30</td>
+          </tr>
+          <tr>
+            <td>Jane Smith</td>
+            <td style="color: rgb(0, 185, 0);">Sent</td>
+            <td>2024-02-20 14:30</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>
