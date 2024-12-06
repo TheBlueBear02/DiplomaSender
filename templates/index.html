@@ -10,13 +10,14 @@
 <body>
   <div class="container">
     <header>
-      <h1>Diploma Auto-Sender</h1>
-      <p>Automate your diploma sending process with ease.</p>
+        <div onclick="styleModeToggle()" class="style-mode-btn" id="dark-mode-toggle"><img id="style-mode-icon" width="50px" height="30px" src="static\icons\light-mode-icon.svg"></div>
+        <h1>Diploma Auto-Sender</h1>
+        <p>Automate your diploma sending process with ease.</p>
     </header>
 
     <!-- Upload Diploma Template -->
     <section class="card">
-        <h2 class="upload-title">Upload Diploma Template</h2>
+        <h2 >Upload Diploma Template</h2>
         <div class="upload-card">
           <div class="upload-box">
             <img width="60px" height="70px" src="static/icons/upload-diploma.svg">
@@ -126,3 +127,28 @@
   </div>
 </body>
 </html>
+
+<script>
+    const toggleButton = document.getElementById('dark-mode-toggle');
+    const imageElement = document.getElementById('style-mode-icon');
+
+    // Define the function to toggle dark mode
+    function styleModeToggle() {
+        // Apply the system preference on initial load
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark-mode');
+            imageElement.src = 'static/icons/dark-mode-icon.svg';
+        }
+
+        // Add event listener to toggle dark mode on button click
+        toggleButton.addEventListener('click', () => {
+            const isDarkMode = document.body.classList.toggle('dark-mode'); // Toggle the dark-mode class
+            if (isDarkMode) {
+                imageElement.src = 'static/icons/dark-mode-icon.svg'; // Set icon for light mode toggle
+            } else {
+                imageElement.src = 'static/icons/light-mode-icon.svg'; // Set icon for dark mode toggle
+            }
+    });
+}
+    
+</script>

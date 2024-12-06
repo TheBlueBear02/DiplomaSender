@@ -1,14 +1,55 @@
+/* Default Light Mode Variables */
+:root {
+    --background-color: #f9f9f9;
+    --text-color: #333;
+    --card-bg-color: #fff;
+    --card-text-color: #333;
+    --border-color: #ccc;
+    --button-bg-color: #3b3b3b;
+    --button-text-color: #fff;
+    --button-hover-bg-color: #2e2e2e;
+    --input-bg-color: #fff;
+    --input-text-color: #333;
+    --placeholder-color: #666;
+    --progressbar-bg: #f3f4f6;
+    --table-border: #ddd;
+    --upload-card-border-color: #D1D5DB;
+    --upload-title-color: #495057;
+    --input-border-color:#D1D5DB;
+  }
+  
+  /* Dark Mode Variables */
+  body.dark-mode {
+    --background-color: #121212;
+    --text-color: #fff;
+    --card-bg-color: #1F2937;
+    --card-text-color: #fff;
+    --border-color: #444;
+    --button-bg-color: #000;
+    --button-text-color: #e0e0e0;
+    --button-hover-bg-color: #1b1b1b;
+    --input-bg-color: #4B5563;
+    --input-text-color: #fff;
+    --placeholder-color: #888;
+    --progressbar-bg: #2b2b2b;
+    --table-border: #ddd;
+    --upload-card-border-color: #D1D5DB;
+    --upload-title-color: #495057;
+    --input-border-color:#D1D5DB;
+    --preview-box-bg-color:#4B5563;
+  }
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--text-color);
   }
   
   .container {
     max-width: 500px;
-    margin: 20px auto;
+    margin: 0px auto;
     padding: 20px;
   }
   
@@ -19,20 +60,21 @@ body {
   
   header h1 {
     font-size: 24px;
-    color: #333;
-  }
+    color: var(--text-color);
+}
   
   header p {
     font-size: 14px;
-    color: #666;
-  }
+    color: var(--placeholder-color);
+}
   
   .card {
-    background-color: #fff;
+    background-color: var(--card-bg-color);
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    color: var(--card-text-color);
   }
   
   .card h2 {
@@ -50,14 +92,16 @@ body {
     width: auto;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);
   }
   
   button {
     display: inline-block;
-    background-color: #000;
-    color: #fff;
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -68,8 +112,8 @@ body {
   }
   
   button:hover {
-    background-color: #2e2e2e;
-  }
+    background-color: var(--button-hover-bg-color);
+}
   
 
   table {
@@ -78,28 +122,28 @@ body {
   }
   
   table th, table td {
-    border: 1px solid #ddd;
+    border: 1px solid var(--table-border);
     padding: 8px;
     text-align: left;
   }
   
   table th {
-    background-color: #f1f1f1;
-  }
+    background-color: var(--card-bg-color);
+}
 
   /* Upload Diploma Template */
   
   .upload-card {
-    background-color: #ffffff;
+    background-color: var(--card-bg-color);
     border-radius: 10px;
     padding: 20px;
-    border: 2px dashed #D1D5DB;
+    border: 2px dashed var(--upload-card-border-color);
   }
   
   .upload-title {
     font-size: 16px;
     font-weight: bold;
-    color: #495057;
+    color: var(--upload-title-color);
     margin-bottom: 15px;
   }
   
@@ -113,25 +157,25 @@ body {
   
   .upload-icon {
     font-size: 30px;
-    color: #6c757d;
+    color: var(--upload-title-color);
     margin-bottom: 10px;
   }
   
   .upload-box p {
-    color: #6c757d;
+    color: var(--upload-title-color);
     font-size: 14px;
     margin-bottom: 10px;
   }
   
   .supported-formats {
     font-size: 12px;
-    color: #adb5bd;
+    color: var(--upload-title-color);
   }
   
   /* Name Placement */
   
   .preview-box{
-    background-color: #F3F4F6;
+    background-color: var(--preview-box-bg-color);
     border-radius: 8px;
     padding: 20px 0px;
   }
@@ -139,14 +183,14 @@ body {
   .preview-image {
     width: 100%;
     height: auto;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     margin-bottom: 10px;
   }
   
   .name-coordinates {
     font-size: 12px;
-    color: #666;
+    color: var(--placeholder-color);
   }
   
   .name-position-table td, .name-position-table tr{
@@ -158,9 +202,9 @@ body {
     width: 100%;
     border-radius: 4px;
     opacity: 1;
-    background: #FFFFFF;
+    background: var(--card-bg-color);
     box-sizing: border-box;
-    border: 1px solid #D1D5DB;
+    border: 1px solid var(--input-border-color);
     padding: 8px 12px;
   }
 
@@ -195,7 +239,8 @@ input[type="text"], textarea {
     padding: 0px 20px;
     display: flex;             /* Use flexbox for horizontal alignment */
     align-items: center;       /* Vertically center the image and text */
-    color: #fff;               /* Set text color */
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);               /* Set text color */
     border: none;              /* Remove button border */
     border-radius: 8px;        /* Optional: add rounded corners */
     cursor: pointer;          /* Change cursor to pointer on hover */
@@ -221,8 +266,16 @@ input[type="text"], textarea {
 /* status dashboard */
 .status-table th, .status-table td{
     border: none;
-    background-color: white;
+    background-color: var(--card-bg-color);
 }
 .status-table tr{
-    border-bottom: 1px solid rgb(219, 219, 219);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.style-mode-btn{
+    position:flex;
+    cursor: pointer;
+    width: 50px;
+    height: 20px;
+    margin-left: auto;
 }
