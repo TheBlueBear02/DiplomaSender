@@ -6,6 +6,7 @@
   <title>Diploma Auto-Sender</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -17,64 +18,87 @@
 
     <!-- Upload Diploma Template -->
     <section class="card">
-        <h2 >Upload Diploma Template</h2>
-        <div class="upload-card">
-          <div class="upload-box">
-            <img width="60px" height="70px" src="static/icons/upload-diploma.svg">
-            <p>Drag and drop your diploma template here</p>
-            <p class="supported-formats">Supported formats: PDF, PNG</p>
-            <button class="browse-button">Browse Files</button>
+      <h2>Upload Diploma Template</h2>
+      <div class="upload-card">
+          <div class="upload-box" id="uploadBox">
+              <img width="60px" height="70px" src="{{ url_for('static', filename='icons/upload-diploma.svg') }}">
+              <p>Drag and drop your diploma template here</p>
+              <p class="supported-formats">Supported formats: PDF, PNG</p>
+              <form action="/upload-template" method="POST" enctype="multipart/form-data" id="uploadForm">
+                  <input type="file" id="diplomaTemplate" name="diploma_template" required >
+                  <button type="button" class="browse-button" onclick="document.getElementById('diplomaTemplate').click()">Browse Files</button>
+              </form>
           </div>
-        </div>
+          <div class="preview-box">
+              <canvas id="pdfPreview" class="preview-image"></canvas>
+          </div>
+      </div>
     </section>
 
-    <!-- Name placement on diploma -->
+    <!-- Name Placement on Diploma -->
     <section class="card">
       <h2>Name Placement</h2>
       <div class="preview-box">
-        <img src="path/to/preview.jpg" alt="Diploma Preview" class="preview-image">
+          <canvas id="pdfPreviewPlacement" class="preview-image"></canvas>
       </div>
       <div class="name-coordinates">
-        <table class="name-position-table">
-            <tr>
-                <td><p>X Position:</p></td>
-                <td><p>Y Position:</p></td>
-            </tr>
-            <tr>
-                <td><input class="name-position-input" type="number" name="x-position" placeholder="Enter X position" value="50"></td>
-                <td><input class="name-position-input" type="number" name="y-position" placeholder="Enter y position" value="50"></td>
-            </tr>
-        </table>
+          <form id="namePlacementForm" action="/place-name" method="POST">
+              <input type="hidden" id="xPosition" name="x_position" value="300">
+              <input type="hidden" id="yPosition" name="y_position" value="450">
+              <input type="text" id="studentName" name="student_name" placeholder="Enter Student Name">
+              <button type="button" id="placeNameButton" class="place-button">Place Name</button>
+          </form>
+          <table class="name-position-table">
+              <tr>
+                  <td><p>X Position:</p></td>
+                  <td><p>Y Position:</p></td>
+              </tr>
+              <tr>
+                  <td><input class="name-position-input" type="number" id="xPositionInput" value="300"></td>
+                  <td><input class="name-position-input" type="number" id="yPositionInput" value="450"></td>
+              </tr>
+          </table>
       </div>
     </section>
+    <script src="{{ url_for('static', filename='js/place-name.js') }}"></script>
 
     <!-- Upload Recipient List -->
     <section class="card">
       <h2>Upload Recipient List</h2>
       <div class="upload-card">
-        <div class="upload-box">
-          <img width="60px" height="70px" src="static/icons/csv-file-icon.svg">
-          <p>Upload your CSV file with names and emails</p>
-          <p class="upload-info">Supported formats: .csv, .xlsx</p>
-          <button class="browse-button">Upload CSV</button>
-        </div>
+          <div class="upload-box" id="csvUploadBox">
+              <img width="60px" height="70px" src="{{ url_for('static', filename='icons/csv-file-icon.svg') }}">
+              <p>Drag and drop your CSV file here</p>
+              <p class="upload-info">Supported format: .csv</p>
+              <input type="file" id="recipientListInput" name="recipient_list" style="display: none;">
+              <button type="button" class="browse-button" onclick="document.getElementById('recipientListInput').click()">Browse Files</button>
+          </div>
       </div>
       <div class="recipient-list-div">
-        <h4>Preview</h4>
-        <table class="recipient-list-table">
-            <tr>
-                <th style="width: 10%;"><p>Select</p></th>
-                <th><p>Name</p></th>
-                <th><p>Email</p></th>
-            </tr>
-            <tr>
-                <td><input style="width: 40px;" type="checkbox"></td>
-                <td><p>name1</p></td>
-                <td><p>email1</p></td>
-            </tr>
-        </table>
+          <h4>Preview</h4>
+          <table class="recipient-list-table" id="recipientListTable">
+              <thead>
+                  <th>
+                      <input type="checkbox" id="selectAllCheckbox" />
+                      <label for="selectAllCheckbox">Select All</label>
+                  </th>
+                  <tr>
+                   
+                      <th>Select</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>New</th>
+                      <th>Send</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Rows will be dynamically inserted here -->
+              </tbody>
+          </table>
       </div>
     </section>
+  <script src="{{ url_for('static', filename='js/upload-csv.js') }}"></script>
+
     
     <!-- Email Configuration -->
     <section class="card">
@@ -126,7 +150,10 @@
       </table>
     </section>
   </div>
+
+  <!-- Include External JavaScript -->
+  <script src="{{ url_for('static', filename='js/drag-and-drop.js') }}"></script>
 </body>
 </html>
-
 <script src="static\js\dark-mode-handler.js"></script>
+
