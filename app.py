@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import request, jsonify,session
 import os
-from flask_mail import Mail, Message
+#from flask_mail import Mail, Message
 import smtplib
 import csv
 from email.message import EmailMessage
@@ -17,6 +17,10 @@ from io import BytesIO
 import PyPDF2
 from PIL import Image
 from pdf2image import convert_from_path
+# Email API related
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2.credentials import Credentials
+
 
 # Constants
 TEST_NAME = "משה כהן"
@@ -278,6 +282,31 @@ def read_students_from_csv(file_path):
         raise e
     return students
 
+# Create Email API connection
+# Replace with your OAuth 2.0 credentials
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+CLIENT_SECRETS_FILE = 'config/client_secrets.json'
+
+@app.route('/connect_email', methods=['GET'])
+def connect_email():
+    # Create OAuth flow instance
+    flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
+    flow.redirect_uri = url_for('oauth_callback', _external=True)
+    
+    # Get the authorization URL
+    auth_url, _ = flow.authorization_url(prompt='consent')
+    return redirect(auth_url)
+
+@app.route('/oauth_callback', methods=['GET'])
+def oauth_callback():
+    flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
+    flow.redirect_uri = url_for('oauth_callback', _external=True)
+    
+    authorization_response = request.url
+    flow.fetch_token(authorization_response=authorization_response)
+    
+
+    return "Email API connected successfully! You can now send emails."
 
 if __name__ == '__main__':
     # Run the Flask app in debug mode for development

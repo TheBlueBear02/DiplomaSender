@@ -13,7 +13,7 @@
     <header>
         <div onclick="styleModeToggle()" class="style-mode-btn" id="dark-mode-toggle"><img id="style-mode-icon" width="50px" height="30px" src="static\icons\light-mode-icon.svg"></div>
         <h1>Diploma Auto-Sender</h1>
-        <p>Automate your diploma sending process with ease.</p>
+        <p>Send course diplomas to your students in 4 easy steps</p>
     </header>
 
     <!-- Upload Diploma Template -->
@@ -22,17 +22,17 @@
       <div class="upload-card">
           <div class="upload-box" id="uploadBox">
               <img width="60px" height="70px" src="{{ url_for('static', filename='icons/upload-diploma.svg') }}">
-              <p>Drag and drop your diploma template here</p>
+              <p>Upload your diploma template</p>
               <p class="supported-formats">Supported formats: PDF, PNG</p>
               <form action="/upload-template" method="POST" enctype="multipart/form-data" id="uploadForm">
-                  <input type="file" id="diplomaTemplate" name="diploma_template" required >
+                  <input style="display: none;" type="file" id="diplomaTemplate" name="diploma_template" required >
                   <button type="button" class="browse-button" onclick="document.getElementById('diplomaTemplate').click()">Browse Files</button>
               </form>
           </div>
-          <div class="preview-box">
-              <canvas id="pdfPreview" class="preview-image"></canvas>
-          </div>
       </div>
+        <div class="preview-box" style="display: none;">
+            <canvas id="pdfPreview" class="preview-image"></canvas>
+        </div>
     </section>
 
     <!-- Name Placement on Diploma -->
@@ -151,9 +151,13 @@
     </section>
   </div>
 
-  <!-- Include External JavaScript -->
-  <script src="{{ url_for('static', filename='js/drag-and-drop.js') }}"></script>
+
 </body>
 </html>
 <script src="static\js\dark-mode-handler.js"></script>
-
+<script src="{{ url_for('static', filename='js/drag-and-drop.js') }}"></script>
+<script>
+  document.querySelector('.connect-email-btn').addEventListener('click', () => {
+    window.location.href = '/connect_email'; // Redirects to start the connection process
+  });
+</script>
