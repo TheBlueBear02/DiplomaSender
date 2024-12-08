@@ -217,6 +217,10 @@ body {
     padding: 8px 12px;
   }
 
+  #studentName{
+    margin-top: 10px;
+  }
+
 /* Upload Recipient List */
 .recipient-list-table td{
     padding: 4px 8px;
@@ -294,3 +298,4 @@ input[type="text"], textarea {
   border-color: #007bff; /* Highlight border color */
   background-color: #f0f8ff; /* Light blue background */
 }
+
