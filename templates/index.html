@@ -13,51 +13,56 @@
     <header>
         <div onclick="styleModeToggle()" class="style-mode-btn" id="dark-mode-toggle"><img id="style-mode-icon" width="50px" height="30px" src="static\icons\light-mode-icon.svg"></div>
         <h1>Diploma Auto-Sender</h1>
-        <p>Send course diplomas to your students in 4 easy steps</p>
+        <p>Automatically generate and send personalized 
+          diplomas to your recipients in only 2 minutes </p>
     </header>
 
     <!-- Upload Diploma Template -->
     <section class="card">
-      <h2>Upload Diploma Template</h2>
-      <div class="upload-card">
+      <h2 onclick="toggleSection(this)" class="collapsible-header">1. Upload Diploma Template</h2>
+      <div class="content" style="display: none;">
+        <div class="upload-card">
           <div class="upload-box" id="uploadBox">
-              <img width="60px" height="70px" src="{{ url_for('static', filename='icons/upload-diploma.svg') }}">
-              <p>Upload your diploma template</p>
-              <p class="supported-formats">Supported formats: PDF, PNG</p>
-              <form action="/upload-template" method="POST" enctype="multipart/form-data" id="uploadForm">
-                  <input style="display: none;" type="file" id="diplomaTemplate" name="diploma_template" required >
-                  <button type="button" class="browse-button" onclick="document.getElementById('diplomaTemplate').click()">Browse Files</button>
-              </form>
+            <img width="60px" height="70px" src="{{ url_for('static', filename='icons/upload-diploma.svg') }}">
+            <p>Upload your diploma template</p>
+            <p class="supported-formats">Supported formats: PDF, PNG</p>
+            <form action="/upload-template" method="POST" enctype="multipart/form-data" id="uploadForm">
+              <input style="display: none;" type="file" id="diplomaTemplate" name="diploma_template" required>
+              <button type="button" class="browse-button" onclick="document.getElementById('diplomaTemplate').click()">Browse Files</button>
+            </form>
           </div>
-      </div>
-        <div class="preview-box" style="display: none;">
-            <canvas id="pdfPreview" class="preview-image"></canvas>
         </div>
+        <div class="preview-box" style="display: none;">
+          <canvas id="pdfPreview" class="preview-image"></canvas>
+        </div>
+      </div>
     </section>
+    
 
     <!-- Name Placement on Diploma -->
     <section class="card">
-      <h2>Name Placement</h2>
-      <div class="preview-box">
-          <canvas id="pdfPreviewPlacement" class="preview-image"></canvas>
-      </div>
-      <div class="name-coordinates">
-          <form id="namePlacementForm" action="/place-name" method="POST">
-              <input type="hidden" id="xPosition" name="x_position" value="300">
-              <input type="hidden" id="yPosition" name="y_position" value="450">
-              <input type="text" id="studentName" name="student_name" placeholder="Enter Student Name">
-              <button type="button" id="placeNameButton" class="place-button">Place Name</button>
-          </form>
-          <table class="name-position-table">
-              <tr>
-                  <td><p>X Position:</p></td>
-                  <td><p>Y Position:</p></td>
-              </tr>
-              <tr>
-                  <td><input class="name-position-input" type="number" id="xPositionInput" value="300"></td>
-                  <td><input class="name-position-input" type="number" id="yPositionInput" value="450"></td>
-              </tr>
-          </table>
+      <h2 onclick="toggleSection(this)" class="collapsible-header">2. Name Placement</h2>
+      <div class="content" style="display: none;">
+
+        <div class="preview-box">
+            <canvas id="pdfPreviewPlacement" class="preview-image"></canvas>
+        </div>
+        <form id="namePlacementForm" action="/place-name" method="POST">
+            <input type="hidden" id="xPosition" name="x_position" value="300">
+            <input type="hidden" id="yPosition" name="y_position" value="450">
+            <input type="text" id="studentName" name="student_name" placeholder="Enter Student Name">
+            <button type="button" id="placeNameButton" class="place-button">Place Name</button>
+        </form>
+        <table class="name-position-table">
+            <tr>
+                <td><p>X Position:</p></td>
+                <td><p>Y Position:</p></td>
+            </tr>
+            <tr>
+                <td><input class="name-position-input" type="number" id="xPositionInput" value="300"></td>
+                <td><input class="name-position-input" type="number" id="yPositionInput" value="450"></td>
+            </tr>
+        </table>
       </div>
     </section>
     <script src="{{ url_for('static', filename='js/place-name.js') }}"></script>
@@ -160,4 +165,16 @@
   document.querySelector('.connect-email-btn').addEventListener('click', () => {
     window.location.href = '/connect_email'; // Redirects to start the connection process
   });
+</script>
+
+<script>
+  function toggleSection(header) {
+  const content = header.nextElementSibling;
+  if (content.style.display === "none" || content.style.display === "") {
+    content.style.display = "block";
+  } else {
+    content.style.display = "none";
+  }
+}
+
 </script>

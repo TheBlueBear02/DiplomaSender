@@ -60,13 +60,16 @@ body {
   }
   
   header h1 {
-    font-size: 24px;
+    font-size: 38px;
     color: var(--text-color);
+    margin: 12px;
 }
   
   header p {
     font-size: 14px;
     color: var(--placeholder-color);
+    width: 70%; 
+    margin: auto;
 }
   
   .card {
@@ -131,6 +134,24 @@ body {
   table th {
     background-color: var(--card-bg-color);
 }
+
+.collapsible-header {
+  cursor: pointer;
+  background-color:var(--card-bg-color);
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1.2em;
+  /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
+
+}
+
+.content {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
 
  /* Upload Diploma Template */
 .upload-card {
@@ -201,7 +222,7 @@ body {
     font-size: 12px;
     color: var(--placeholder-color);
   }
-  
+
   .name-position-table td, .name-position-table tr{
     border: none;
     padding: 0px 5px;
@@ -250,13 +271,13 @@ input[type="text"], textarea {
 
 .connect-email-btn{
     padding: 0px 20px;
-    display: flex;             /* Use flexbox for horizontal alignment */
-    align-items: center;       /* Vertically center the image and text */
+    display: flex;            
+    align-items: center;       
     background-color: var(--button-bg-color);
-    color: var(--button-text-color);               /* Set text color */
-    border: none;              /* Remove button border */
-    border-radius: 8px;        /* Optional: add rounded corners */
-    cursor: pointer;          /* Change cursor to pointer on hover */
+    color: var(--button-text-color);               
+    border: none;             
+    border-radius: 8px;        
+    cursor: pointer;      
 }
 
 /* Send Section */
@@ -295,7 +316,7 @@ input[type="text"], textarea {
 
 /* Drag-and-Drop Feedback */
 .upload-box.drag-over {
-  border-color: #007bff; /* Highlight border color */
-  background-color: #f0f8ff; /* Light blue background */
+  border-color: #007bff; 
+  background-color: #f0f8ff; 
 }
 
