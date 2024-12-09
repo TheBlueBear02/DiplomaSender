@@ -11,16 +11,22 @@
 <body>
   <div class="container">
     <header>
-        <div onclick="styleModeToggle()" class="style-mode-btn" id="dark-mode-toggle"><img id="style-mode-icon" width="50px" height="30px" src="static\icons\light-mode-icon.svg"></div>
-        <h1>Diploma Auto-Sender</h1>
-        <p>Automatically generate and send personalized 
-          diplomas to your recipients in only 2 minutes </p>
+        <div class="header-text">
+          <div class="color-block"></div>
+          <h1>Send Certificate via Email</h1>
+          <p>Automatically generate and send personalized 
+            diplomas to your recipients in <span class="highlight">  2 minutes!</span></p>
+        </div>
+        <div onclick="styleModeToggle()" class="style-mode-btn" id="dark-mode-toggle"><img id="style-mode-icon" width="40px" height="20px" src="static\icons\light-mode-icon.svg"></div>
     </header>
 
     <!-- Upload Diploma Template -->
     <section class="card">
-      <h2 onclick="toggleSection(this)" class="collapsible-header">1. Upload Diploma Template</h2>
-      <div class="content" style="display: none;">
+      <div onclick="toggleSection(this)" class="collapsible-header">
+        <h2>1. Upload Diploma Template</h2>
+        <img class="done-icon" src="static/icons/green-check.svg">
+      </div>
+      <div class="content" style="display: block;">
         <div class="upload-card">
           <div class="upload-box" id="uploadBox">
             <img width="60px" height="70px" src="{{ url_for('static', filename='icons/upload-diploma.svg') }}">
@@ -41,7 +47,10 @@
 
     <!-- Name Placement on Diploma -->
     <section class="card">
-      <h2 onclick="toggleSection(this)" class="collapsible-header">2. Name Placement</h2>
+      <div onclick="toggleSection(this)" class="collapsible-header">
+        <h2>2. Name Placement</h2>
+        <img class="done-icon" src="static/icons/grey-check.svg">
+      </div>
       <div class="content" style="display: none;">
 
         <div class="preview-box">
@@ -69,8 +78,11 @@
 
     <!-- Upload Recipient List -->
     <section class="card">
-      <h2>Upload Recipient List</h2>
-      <div class="upload-card">
+      <div onclick="toggleSection(this)" class="collapsible-header">
+        <h2>3. Upload Recipient List </h2>
+        <img class="done-icon" src="static/icons/grey-check.svg">
+      </div>
+      <div class="content" style="display: none;">
           <div class="upload-box" id="csvUploadBox">
               <img width="60px" height="70px" src="{{ url_for('static', filename='icons/csv-file-icon.svg') }}">
               <p>Drag and drop your CSV file here</p>
@@ -78,7 +90,6 @@
               <input type="file" id="recipientListInput" name="recipient_list" style="display: none;">
               <button type="button" class="browse-button" onclick="document.getElementById('recipientListInput').click()">Browse Files</button>
           </div>
-      </div>
       <div class="recipient-list-div">
           <h4>Preview</h4>
           <table class="recipient-list-table" id="recipientListTable">
@@ -101,21 +112,27 @@
               </tbody>
           </table>
       </div>
+      </div>
     </section>
   <script src="{{ url_for('static', filename='js/upload-csv.js') }}"></script>
 
     
     <!-- Email Configuration -->
     <section class="card">
-      <h2>Email Configuration</h2>
-      <div class="email-info-box">
-        <p>Email Subject</p>
-        <input type="text" id="email-subject" placeholder="Your Diploma is Here!">
-        
-        <p>Email Body</p>
-        <textarea id="email-body" placeholder="Write your email content here..."></textarea>
+      <div onclick="toggleSection(this)" class="collapsible-header">
+        <h2>4. Email Configuration </h2>
+        <img class="done-icon" src="static/icons/grey-check.svg">
       </div>
-      <button class="connect-email-btn"><img style="width: 40px; height: 60px; margin-right: 10px;" src="static\icons\email-icon.svg">Connect Email</button>
+      <div class="content" style="display: none;">
+        <div class="email-info-box">
+          <p>Email Subject</p>
+          <input type="text" id="email-subject" placeholder="Your Diploma is Here!">
+          
+          <p>Email Body</p>
+          <textarea id="email-body" placeholder="Write your email content here..."></textarea>
+        </div>
+        <button class="connect-email-btn"><img style="width: 40px; height: 60px; margin-right: 10px;" src="static\icons\email-icon.svg">Connect Email</button>
+      </div>
     </section>
 
     <!-- Send Section -->

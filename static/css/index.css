@@ -1,44 +1,45 @@
 /* Default Light Mode Variables */
 :root {
-    --background-color: #f9f9f9;
-    --text-color: #333;
-    --card-bg-color: #fff;
-    --card-text-color: #333;
-    --border-color: #ccc;
-    --button-bg-color: #3b3b3b;
-    --button-text-color: #fff;
-    --button-hover-bg-color: #2e2e2e;
-    --input-bg-color: #fff;
-    --input-text-color: #333;
-    --placeholder-color: #666;
-    --progressbar-bg: #f3f4f6;
-    --table-border: #ddd;
-    --upload-card-border-color: #D1D5DB;
-    --upload-title-color: #495057;
-    --input-border-color:#D1D5DB;
-    --preview-box-bg-color:#eeeeee;
-  }
-  
-  /* Dark Mode Variables */
-  body.dark-mode {
-    --background-color: #121212;
-    --text-color: #fff;
-    --card-bg-color: #1F2937;
-    --card-text-color: #fff;
-    --border-color: #444;
-    --button-bg-color: #000;
-    --button-text-color: #e0e0e0;
-    --button-hover-bg-color: #1b1b1b;
-    --input-bg-color: #4B5563;
-    --input-text-color: #fff;
-    --placeholder-color: #888;
-    --progressbar-bg: #2b2b2b;
-    --table-border: #ddd;
-    --upload-card-border-color: #D1D5DB;
-    --upload-title-color: #495057;
-    --input-border-color:#D1D5DB;
-    --preview-box-bg-color:#4B5563;
-  }
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --card-bg-color: #fff;
+  --card-text-color: #333;
+  --border-color: #ccc;
+  --button-bg-color: #3b3b3b;
+  --button-text-color: #fff;
+  --button-hover-bg-color: #2e2e2e;
+  --input-bg-color: #fff;
+  --input-text-color: #333;
+  --placeholder-color: #666;
+  --progressbar-bg: #f3f4f6;
+  --table-border: #ddd;
+  --upload-card-border-color: #D1D5DB;
+  --upload-title-color: #495057;
+  --input-border-color: #D1D5DB;
+  --preview-box-bg-color: #eeeeee;
+}
+
+/* Dark Mode Variables */
+body.dark-mode {
+  --background-color: #1e2021; /* Dark neutral gray for better comfort */
+  --text-color: #E0E0E0; /* Light gray for softer contrast than pure white */
+  --card-bg-color: #242628; /* Slightly lighter than the background for depth */
+  --card-text-color: #E0E0E0;
+  --border-color: #919191; /* Soft gray for subtle borders */
+  --button-bg-color: #2E3A3F; /* Dark teal-gray for an attractive button style */
+  --button-text-color: #E0F7FA; /* Light aqua for visibility */
+  --button-hover-bg-color: #405057; /* Slightly lighter hover color */
+  --input-bg-color: #2D3133; /* Dark neutral tone */
+  --input-text-color: #ffffff;
+  --placeholder-color: #7A7D80; /* Mid-gray for subtle placeholders */
+  --progressbar-bg: #383C3F; /* Slightly contrasting dark gray */
+  --table-border: #3E4244;
+  --upload-card-border-color: #4C5053;
+  --upload-title-color: #AEB6BF; /* Light slate for headings */
+  --input-border-color: #b0b0b0;
+  --preview-box-bg-color: #242628;
+}
+
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -51,18 +52,37 @@ body {
   .container {
     max-width: 500px;
     margin: 0px auto;
-    padding: 20px;
+    padding: 10px;
   }
   
   header {
+    display: flex; /* Enable flexbox */
     text-align: center;
     margin-bottom: 20px;
+    position: relative; /* Needed to position the style mode button */
+
+  }
+  .header-text{
+    margin: auto;
+  }
+  .highlight {
+    color: rgb(70, 232, 70); /* Change the text color */
+    font-weight: bold; /* Optional: Make it bold */
   }
   
+  .color-block{
+    background-color: rgba(144, 238, 144, 0.3); /* Light green with 70% opacity */
+    position: absolute; /* Allows precise placement */
+    top: 40%; /* Adjust vertically (you can tweak this value) */
+    left: 0; /* Start from the left edge of the container */
+    height: 18%; /* Adjust height (matches half of the H1 visually) */
+    width: 100%; /* Covers half of the H1's width */
+    z-index: -1; /* Places the block behind the H1 text */
+  }
   header h1 {
     font-size: 38px;
     color: var(--text-color);
-    margin: 12px;
+    margin-top: 30px;
 }
   
   header p {
@@ -70,20 +90,28 @@ body {
     color: var(--placeholder-color);
     width: 70%; 
     margin: auto;
+    line-height: 1.5; /* Adjust the value as needed */
+
 }
   
   .card {
     background-color: var(--card-bg-color);
-    padding: 20px;
+    padding: 10px 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     color: var(--card-text-color);
   }
   
+  .done-icon{
+    margin: auto 0px;
+    width: 28px;
+    height: 28px;
+  }
   .card h2 {
     font-size: 18px;
     margin-bottom: 20px;
+    margin: 10px 10px;
   }
 
   .card p{
@@ -138,10 +166,12 @@ body {
 .collapsible-header {
   cursor: pointer;
   background-color:var(--card-bg-color);
-  padding: 10px;
+  padding:0px 10px;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 1.2em;
+  display: flex; /* Enable flexbox */
+  justify-content: space-between; /* Space out items */
   /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
 
 }
@@ -307,11 +337,11 @@ input[type="text"], textarea {
 }
 
 .style-mode-btn{
-    position:flex;
+    position: absolute; /* Position button within the header */
     cursor: pointer;
-    width: 50px;
-    height: 20px;
-    margin-left: auto;
+    width: 30px;
+    height: 15px;
+    margin-left:92%;
 }
 
 /* Drag-and-Drop Feedback */

@@ -63,11 +63,10 @@ def upload_template():
     if file.filename == '':
         flash('No selected file')
         return redirect(url_for('index'))
-    print("rony1")
+    
     if file and allowed_file(file.filename):
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         try:
-            print("rony2")
             file.save(filepath)
             session['uploaded_template'] = filepath
             print(f"Save session:{session['uploaded_template']}")
