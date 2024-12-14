@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
     placeNameButton.addEventListener('click', () => {
         const xPosition = xPositionInput.value;
         const yPosition = yPositionInput.value;
-        const studentName = studentNameInput.value;
-
+        //const studentName = studentNameInput.value;
+        const studentName = 'Student Name';
         if (!studentName) {
             alert("Please enter a student name.");
             return;

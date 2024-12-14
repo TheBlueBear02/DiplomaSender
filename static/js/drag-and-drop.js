@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.text();
         })
         .then(data => {
-            console.log("File uploaded successfully:", data);
+            console.log("File uploaded successfully:");
             //alert("File uploaded successfully!");
         })
         .catch(error => {

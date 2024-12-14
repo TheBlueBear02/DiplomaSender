@@ -166,6 +166,15 @@ body {
     background-color: var(--card-bg-color);
 }
 
+/* Nav Box */
+.nav-box{
+  background-color: var(--card-bg-color);
+  direction: rtl;
+}
+.next-btn{
+}
+
+
 .collapsible-header {
   cursor: pointer;
   background-color:var(--card-bg-color);

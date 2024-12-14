@@ -25,7 +25,7 @@
     <section class="card">
       <div onclick="toggleSection(this)" class="collapsible-header">
         <h2>1. Upload Diploma Template</h2>
-        <img class="done-icon" src="static/icons/green-check.svg">
+        <img class="done-icon" src="static/icons/grey-check.svg">
       </div>
       <div class="content" style="display: block;">
         <div class="upload-card">
@@ -42,7 +42,11 @@
         <div class="preview-box" style="display: none;">
           <canvas id="pdfPreview" class="preview-image"></canvas>
         </div>
+        <div class="nav-box">
+          <button class="next-btn">Next</button>
+        </div>
       </div>
+      
     </section>
     
 
@@ -185,14 +189,41 @@
   });
 </script>
 
+
 <script>
   function toggleSection(header) {
-  const content = header.nextElementSibling;
-  if (content.style.display === "none" || content.style.display === "") {
-    content.style.display = "block";
-  } else {
-    content.style.display = "none";
+    const content = header.nextElementSibling;
+    if (content.style.display === "none" || content.style.display === "") {
+      content.style.display = "block"; // Show the section
+    } else {
+      content.style.display = "none"; // Hide the section
+    }
   }
-}
 
+  // Add navigation for the Next button
+  document.querySelectorAll('.next-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const currentSection = button.closest('section');
+      const nextSection = currentSection.nextElementSibling;
+
+      // Change done icon for the current section
+      const doneIcon = currentSection.querySelector('.done-icon');
+      if (doneIcon) {
+        doneIcon.src = "static/icons/green-check.svg"; // Update to the completed icon
+      }
+
+      // Close the current section
+      const currentHeader = currentSection.querySelector('.collapsible-header');
+      if (currentHeader) {
+        toggleSection(currentHeader);
+      }
+
+      // Open the next section (if it exists)
+      if (nextSection && nextSection.querySelector('.collapsible-header')) {
+        const nextHeader = nextSection.querySelector('.collapsible-header');
+        toggleSection(nextHeader);
+      }
+    });
+  });
 </script>
+
