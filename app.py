@@ -20,11 +20,16 @@ from pdf2image import convert_from_path
 # Email API related
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.oauth2.credentials import Credentials
-
+import pickle
+import base64
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
+import re
 
 # Constants
-TEST_NAME = "משה כהן"
+TEST_NAME = "רוני גבאי"
 TEST_EMAIL = "rony.gabbai@gmail.com"
+
 
 WIDTH, HEIGHT = letter
 
@@ -39,6 +44,14 @@ UPLOAD_FOLDER = os.path.join(app.root_path, 'static/uploads')
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create folder if it doesn't exist
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+@app.route('/privacy_policy.html')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+@app.route('/terms_of_service.html')
+def terms_of_service():
+    return render_template('terms_of_service.html')
 
 @app.route('/')
 def index():
@@ -100,20 +113,112 @@ def upload_recipients():
         flash(f'Recipient list uploaded successfully: {file.filename}')
         return redirect(url_for('index'))
 
-@app.route('/send-test-email', methods=['POST'])
-def send_test_email():
-    """
-    Placeholder for email sending logic.
-    """
-    email_subject = request.form.get('email_subject')
-    email_body = request.form.get('email_body')
+@app.route('/send_email', methods=['POST'])
+def send_email():
+    # Load credentials
+    credentials = load_credentials()
+    if not credentials:
+        return jsonify({"error": "No valid credentials found. Please connect your email first."}), 400
 
-    # Replace with real email sending code
-    flash(f'Test email sent with subject: "{email_subject}"')
-    return redirect(url_for('index'))
+    # Build Gmail API service
+    service = build('gmail', 'v1', credentials=credentials)
+
+    # Retrieve the students list from the session
+    students = session.get('students')
+    if not students:
+        return jsonify({"Error": "No recipient list found. Please upload a recipient list first."}), 400
+    # Parse request data
+    data = request.get_json()
+    if not data:
+            return jsonify({"error": "Invalid JSON payload"}), 400
+    subject = data.get('subject', "Your Diploma is Ready!")
+    body_template = data.get('body', "Hello, your diploma is attached.")
+
+    
+
+    # Iterate over the students and send emails
+    results = []
+    for student in students:
+        to_email = student.get('email')
+        print(f"Sending to email:{to_email}")
+        #body = body_template.replace("{name}", student.get('name', 'Student'))
+        # Convert text to HTML to support hebrew txt indent
+        html_output = txt_to_html(body_template,student.get('name', 'Student'))
+        body = html_output
+
+        if not to_email:
+            results.append({"name": student.get('name'), "error": "Missing email address"})
+            continue
+        
+        x_position = session.get('x_position')
+        y_position = session.get('y_position')
+
+        # Get the uploaded template path from session
+        pdf_file = session.get('uploaded_template')
+        print(f"pdf_file:{pdf_file}")
+        if not pdf_file or not os.path.exists(pdf_file):
+            return jsonify({"error": "Uploaded template not found. Please upload a template first."}), 400
+ 
+        # Create student diploma       
+        create_student_diploma(student, test=False, pdf_file=pdf_file,x_pos=x_position,y_pos=y_position)
+
+        # Path to the student's diploma PDF file
+        pdf_filename = f"static/course/{student['name'].replace(' ', '_')}_diploma.pdf"
+        print(f"pdf_file:{pdf_filename}")
+        jpg_filename = f"static/course/{student['name'].replace(' ', '_')}_diploma.jpg"
+        print(f"jpg_file:{jpg_filename}")
+        # Create student diploma
 
 
-# Place name locattion 
+        if not os.path.exists(pdf_filename):
+            results.append({"name": student.get('name'), "error": "Diploma file not found"})
+            print("file not found")
+            continue
+
+        try:
+           
+            message = MIMEMultipart()
+            message['to'] = to_email or "rony.gabbai@gmail.com"
+            message['subject'] = subject or "no subject"
+            message['from'] = "me"
+
+
+            # Add email body
+            message.attach(MIMEText(body, "html", "utf-8"))
+            # Attach the PDF file
+            with open(pdf_filename, "rb") as pdf_file:
+                pdf_attachment = MIMEApplication(pdf_file.read(), _subtype="pdf")
+                pdf_attachment.add_header(
+                    'Content-Disposition',
+                    'attachment',
+                    filename=os.path.basename(pdf_filename)
+                )
+                message.attach(pdf_attachment)
+
+            # Attach the JPG file
+            with open(jpg_filename, 'rb') as f:
+                jpg_data = f.read()
+                jpg_attachment = MIMEApplication(jpg_data, _subtype='jpeg')
+                jpg_attachment.add_header('Content-Disposition', 'attachment', filename=jpg_filename)
+                message.attach(jpg_attachment)  
+
+            # Encode the email as base64
+            try:
+                raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode('utf-8')
+            except Exception as e:
+                print(f"Error encoding message: {e}")
+            # Send the email
+            #print(f"message:{message}")
+            sent_message = service.users().messages().send(userId='me', body={'raw': raw_message}).execute()
+            results.append({"name": student.get('name'), "email": to_email, "message_id": sent_message['id']})
+        except Exception as e:
+            print("Send error")
+            results.append({"name": student.get('name'), "email": to_email, "error": str(e)})
+
+    return jsonify({"success": True, "results": results}), 200
+
+
+# Place name location
 @app.route('/place-name', methods=['POST'])
 def place_name():
     """
@@ -121,10 +226,12 @@ def place_name():
     """
     try:
         # Extract data from the request
-        student_name = request.form.get('student_name')
+        student_name = TEST_NAME #request.form.get('student_name')
         x_position = request.form.get('x_position', int(WIDTH / 2))
-        y_position = request.form.get('y_position', int(HEIGHT /2 ))
-
+        y_position = request.form.get('y_position', int(3*HEIGHT/4 ))
+        # Save position
+        session['x_position'] = x_position
+        session['y_position'] = y_position
         print(f"Received student_name: {student_name}, x_position: {x_position}, y_position: {y_position}")
 
         # Ensure required parameters are provided
@@ -141,11 +248,9 @@ def place_name():
         if not pdf_file or not os.path.exists(pdf_file):
             return jsonify({"error": "Uploaded template not found. Please upload a template first."}), 400
         
-        # Mock student data
-        student = {"name": student_name}
 
         # Call the create_student_diploma function
-         # Call the function with the file path
+        # Call the function with the file path
         create_student_diploma(student, test=False, pdf_file=pdf_file,x_pos=x_position,y_pos=y_position)
 
         # Assuming the output file path is determined in your function
@@ -157,10 +262,65 @@ def place_name():
 
 
     except Exception as e:
+        print("D10")
         print(f"Error placing name: {e}")
         return jsonify({"error": "An error occurred while placing the name"}), 500
 
 import unicodedata
+
+def txt_to_html(txt, name, bullet_symbols=None):
+    if bullet_symbols is None:
+        bullet_symbols = ["💫"]  # Default bullet symbols
+    
+    html_template = """<!DOCTYPE html>
+    <html lang="he">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body style="direction: rtl; text-align: right; font-family: Arial, sans-serif; color: #333333; margin: 20px;">
+        {}
+    </body>
+    </html>"""
+    # Regex to detect URLs
+    url_pattern = re.compile(r"(http[s]?://[^\s]+)")
+
+    # Replace {{name}} with the actual name
+    txt = txt.replace("{{name}}", f'<span style="color: #ff6600;">{name}</span>')
+
+    # Split text into lines
+    lines = txt.strip().split("\n")
+
+    html_body = ""
+    for line in lines:
+        if line.strip() == "":  # Skip empty lines
+            continue
+        elif any(line.startswith(symbol) for symbol in bullet_symbols):  # Handle general bullet symbols
+            html_body += f'<p style="line-height: 1.4;font-weight: bold; margin-left: 10px;">{line}</p>\n'
+        elif line.startswith("-"):  # List item
+            html_body += f'<li style="margin-bottom: 10px;">{line[1:].strip()}</li>\n'
+        else:  # Regular paragraph
+            line = url_pattern.sub(r'<a href="\1" target="_blank" style="color: #0066cc; text-decoration: none;">\1</a>', line)
+            html_body += f'<p style="line-height: 1.2;">{line}</p>\n'
+
+    # Wrap in <ul> if it contains list items
+    if "<li" in html_body:
+        html_body = html_body.replace('<li', '<ul style="list-style-type: none; padding: 0;"><li', 1).replace('</li>\n', '</li></ul>\n', 1)
+
+    
+    # save the mail body
+    #session['html_body'] = html_template.format(html_body)
+    html_body =  html_template.format(html_body)
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], 'html_body.html')
+    try:
+    # Write the HTML content to the file
+        with open(filepath, 'w', encoding='utf-8') as html_file:
+            html_file.write(html_body)
+        print(f"HTML file saved to: {filepath}")
+        return html_body
+    except Exception as e:
+        print(f"An error occurred while saving the HTML file: {e}")
+        return None
+    
 
 def is_hebrew(text):
     """
@@ -256,7 +416,8 @@ def upload_csv():
     try:
         students = read_students_from_csv(file_path)
         # Optionally delete the file after reading it
-        os.remove(file_path)
+        #os.remove(file_path)
+        session['students'] = students
         return jsonify({"success": True, "students": students}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to process CSV: {str(e)}"}), 500
@@ -286,6 +447,19 @@ def read_students_from_csv(file_path):
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 CLIENT_SECRETS_FILE = 'config/client_secrets.json'
 
+# Helper function to save credentials
+def save_credentials(credentials):
+    with open('token.pickle', 'wb') as token_file:
+        pickle.dump(credentials, token_file)
+
+# Helper function to load credentials
+def load_credentials():
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token_file:
+            return pickle.load(token_file)
+    return None
+
+
 @app.route('/connect_email', methods=['GET'])
 def connect_email():
     # Create OAuth flow instance
@@ -296,6 +470,40 @@ def connect_email():
     auth_url, _ = flow.authorization_url(prompt='consent')
     return redirect(auth_url)
 
+def get_credentials():
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token_file:
+            credentials = pickle.load(token_file)
+            if credentials.expired and credentials.refresh_token:
+                credentials.refresh(Request())
+            return credentials
+    else:
+        return None
+
+from googleapiclient.discovery import build
+
+'''
+@app.route('/send_email', methods=['POST'])
+def send_email():
+    credentials = get_credentials()
+    if not credentials:
+        return "No valid credentials found. Please connect your email first.", 400
+
+    service = build('gmail', 'v1', credentials=credentials)
+
+    # Replace with your email content
+    message = {
+        'raw': 'encoded_message_base64_here'
+    }
+
+    try:
+        sent_message = service.users().messages().send(userId='me', body=message).execute()
+        return f"Email sent successfully: {sent_message['id']}"
+    except Exception as e:
+        return f"An error occurred: {e}", 500
+'''
+
+
 @app.route('/oauth_callback', methods=['GET'])
 def oauth_callback():
     flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
@@ -304,9 +512,16 @@ def oauth_callback():
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
     
+     # Save credentials
+    credentials = flow.credentials
+    save_credentials(credentials)  # Replace with your logic for saving credentials
 
-    return "Email API connected successfully! You can now send emails."
-
+    #return "Email API connected successfully! You can now send emails."
+    return redirect('/#email-configuration')
 if __name__ == '__main__':
     # Run the Flask app in debug mode for development
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, ssl_context=(
+        '/home/rony_gabbai/ssl/fullchain.pem',
+        '/home/rony_gabbai/ssl/privkey.pem'
+    ))

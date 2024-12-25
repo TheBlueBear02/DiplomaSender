@@ -236,7 +236,38 @@ body {
 
 
   /* Name Placement */
-  
+  /* Center the button horizontally */
+  .button-container {
+    text-align: center; /* Center content horizontally */
+    margin: 20px 0; /* Add spacing above and below the button */
+  }
+  .place-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4285F4; /* Google Blue */
+    color: white;
+    cursor: pointer;
+}
+
+.place-button:hover {
+    background-color: #3367D6; /* Darker blue on hover */
+}
+.next-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #34A853; /* Google Green */
+  color: white;
+  cursor: pointer;
+  margin-top: 10px; /* Add some space from the table */
+}
+
+.next-button:hover {
+  background-color: #2A7D43; /* Darker green on hover */
+}
   .preview-box{
     background-color: var(--preview-box-bg-color);
     border-radius: 8px;
@@ -302,6 +333,7 @@ input[type="text"], textarea {
     height: 200px;
 }
 
+
 .connect-email-btn{
     padding: 0px 20px;
     display: flex;            
@@ -312,6 +344,37 @@ input[type="text"], textarea {
     border-radius: 8px;        
     cursor: pointer;      
 }
+
+/* Reset any conflicting styles for .review-btn */
+.review-btn {
+    all: unset; /* Reset all inherited styles */
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: white; /* White background */
+    color: #333; /* Dark text */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+    margin-top: 15px; /* Add vertical space */
+}
+
+/* Hover effect for Review button */
+.review-btn:hover {
+    background-color: #f0f0f0; /* Light gray on hover */
+    color: #000; /* Slightly darker text */
+}
+
+
+.button-group {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  justify-content: start; /* Align buttons to the left */
+  margin-top: 20px;
+}
+
 
 /* Send Section */
 .send-btn{

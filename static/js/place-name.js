@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const placeNameButton = document.getElementById('placeNameButton');
     const xPositionInput = document.getElementById('xPositionInput');
     const yPositionInput = document.getElementById('yPositionInput');
-    const studentNameInput = document.getElementById('studentName');
+    //const studentNameInput = document.getElementById('studentName');
     const namePlacementForm = document.getElementById('namePlacementForm');
     
-    if (!canvasPlacement || !placeNameButton || !studentNameInput) {
+    if (!canvasPlacement || !placeNameButton ){//|| !studentNameInput) {
         console.error("One or more required elements are missing.");
         return;
     }
@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     placeNameButton.addEventListener('click', () => {
         const xPosition = xPositionInput.value;
         const yPosition = yPositionInput.value;
-        const studentName = studentNameInput.value;
+        // const studentName = studentNameInput.value;
 
-        if (!studentName) {
-            alert("Please enter a student name.");
-            return;
-        }
+        //if (!studentName) {
+        //    alert("Please enter a student name.");
+        //    return;
+        //}
 
         // Update hidden inputs
         document.getElementById('xPosition').value = xPosition;
@@ -93,3 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+// New functionality for the Next button
+document.getElementById("nextButton").addEventListener("click", () => {
+    // Close the Name Placement section
+    const namePlacementSection = document.querySelector("#namePlacementForm").closest(".card");
+    const namePlacementContent = namePlacementSection.querySelector(".content");
+    namePlacementContent.style.display = "none";
+
+    // Open the Upload Recipient List section
+    const recipientListSection = document.querySelector("#csvUploadBox").closest(".card");
+    const recipientListContent = recipientListSection.querySelector(".content");
+    recipientListContent.style.display = "block";
+});
+

@@ -143,3 +143,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+document.getElementById("diplomaTemplate").addEventListener("change", () => {
+    // Check if a file has been selected
+    const fileInput = document.getElementById("diplomaTemplate");
+    if (fileInput.files.length > 0) {
+        // Submit the form
+       //document.getElementById("uploadForm").submit();
+
+       // Close the Upload Diploma Template section
+        const uploadSection = document.querySelector("#uploadBox").closest(".card");
+        const uploadContent = uploadSection.querySelector(".content");
+        uploadContent.style.display = "none";
+        // Automatically open the Name Placement section
+        const namePlacementSection = document.querySelector("#namePlacementForm").closest(".card");
+        const namePlacementContent = namePlacementSection.querySelector(".content");
+        namePlacementContent.style.display = "block";
+    }
+});

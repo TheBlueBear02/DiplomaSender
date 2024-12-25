@@ -59,9 +59,11 @@
         </div>
         <form id="namePlacementForm" action="/place-name" method="POST">
             <input type="hidden" id="xPosition" name="x_position" value="300">
-            <input type="hidden" id="yPosition" name="y_position" value="450">
-            <input type="text" id="studentName" name="student_name" placeholder="Enter Student Name">
-            <button type="button" id="placeNameButton" class="place-button">Place Name</button>
+            <input type="hidden" id="yPosition" name="y_position" value="550">
+            <!--input type="text" id="studentName" name="student_name" placeholder="Enter Student Name"-->
+            <div class="button-container">
+              <button type="button" id="placeNameButton" class="place-button">Name Placement</button>
+            </div> 
         </form>
         <table class="name-position-table">
             <tr>
@@ -70,9 +72,12 @@
             </tr>
             <tr>
                 <td><input class="name-position-input" type="number" id="xPositionInput" value="300"></td>
-                <td><input class="name-position-input" type="number" id="yPositionInput" value="450"></td>
+                <td><input class="name-position-input" type="number" id="yPositionInput" value="550"></td>
             </tr>
         </table>
+        <div class="button-container">
+          <button type="button" id="nextButton" class="next-button">Next</button>
+        </div>
       </div>
     </section>
     <script src="{{ url_for('static', filename='js/place-name.js') }}"></script>
@@ -119,7 +124,7 @@
 
     
     <!-- Email Configuration -->
-    <section class="card">
+    <section class="card"  id="email-configuration">
       <div onclick="toggleSection(this)" class="collapsible-header">
         <h2>4. Email Configuration </h2>
         <img class="done-icon" src="static/icons/grey-check.svg">
@@ -132,9 +137,15 @@
           <p>Email Body</p>
           <textarea id="email-body" placeholder="Write your email content here..."></textarea>
         </div>
-        <button class="connect-email-btn"><img style="width: 40px; height: 60px; margin-right: 10px;" src="static\icons\email-icon.svg">Connect Email</button>
+	<div class="button-container">
+          <button class="connect-email-btn">
+            <img style="width: 40px; height: 60px; margin-right: 10px;" src="static/icons/email-icon.svg">Connect Email
+          </button>
+          <button class="review-btn" id="reviewButton">Review</button>
+        </div>
       </div>
     </section>
+    <script src="{{ url_for('static', filename='js/email-config.js') }}"></script>
 
     <!-- Send Section -->
     <section class="card">
@@ -144,7 +155,7 @@
         <progress class="sending-progressbar" value="32" max="100"> 32% </progress>
       </div>
 
-      <button class="send-btn">Send Diplomas (2)</button>
+      <button id="sendDiplomasButton" class="send-btn">Send Diplomas (2)</button>
     </section>
 
     <!-- Status Dashboard -->
@@ -176,6 +187,7 @@
 
 
 </body>
+<script src="{{ url_for('static', filename='js/send-diplomas.js') }}"></script>
 </html>
 <script src="static\js\dark-mode-handler.js"></script>
 <script src="{{ url_for('static', filename='js/drag-and-drop.js') }}"></script>
