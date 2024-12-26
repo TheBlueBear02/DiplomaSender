@@ -302,6 +302,12 @@ body {
     padding: 8px 12px;
   }
 
+  /* Styles for dark mode */
+  .dark-mode .name-position-input {
+    color: white; /* Text color in dark mode */
+    background-color: #333; /* Background color in dark mode */
+    border: 1px solid #555; /* Darker border */
+  }
   #studentName{
     margin-top: 10px;
   }
@@ -432,5 +438,65 @@ input[type="text"], textarea {
 .upload-box.drag-over {
   border-color: #007bff; 
   background-color: #f0f8ff; 
+}
+
+/* Container for the test email and Review button */
+.test-email-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the input and button */
+    margin-top: 15px; /* Add space from the Connect Email button */
+}
+
+/* Styling for the email input */
+.test-email-input {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 250px; /* Set a reasonable width for the input */
+}
+
+/* Focus styling for the input */
+.test-email-input:focus {
+    outline: none;
+    border-color: #4285F4; /* Google Blue */
+    box-shadow: 0 0 5px rgba(66, 133, 244, 0.5); /* Light blue glow */
+}
+.progressbar-box {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.sending-progressbar {
+    width: 100%; /* Full-width progress bar */
+    height: 20px; /* Height of the progress bar */
+    border: 1px solid #ccc; /* Optional border */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #f3f3f3; /* Light gray background */
+    overflow: hidden;
+    display: inline-block;
+}
+
+.sending-progressbar::-webkit-progress-bar {
+    background-color: #f3f3f3; /* Background color for Webkit browsers */
+    border-radius: 10px;
+}
+
+.sending-progressbar::-webkit-progress-value {
+    background-color: #4CAF50; /* Green color for progress */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.sending-progressbar::-moz-progress-bar {
+    background-color: #4CAF50; /* Green color for Firefox progress */
+}
+
+#progressLabel {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
 }
 

@@ -16,7 +16,7 @@
           <h1>Send Certificate via Email</h1>
           <p>Automatically generate and send personalized 
             diplomas to your recipients in <span class="highlight">  2 minutes!</span></p>
-          <p style="margin-top: 10px; font-size: 12px;">15,643 Diplomas sent already</p>
+          <!--p style="margin-top: 10px; font-size: 12px;">15,643 Diplomas sent already</p-->
         </div>
         <div onclick="styleModeToggle()" class="style-mode-btn" id="dark-mode-toggle"><img id="style-mode-icon" width="40px" height="20px" src="static\icons\light-mode-icon.svg"></div>
     </header>
@@ -141,24 +141,28 @@
           <button class="connect-email-btn">
             <img style="width: 40px; height: 60px; margin-right: 10px;" src="static/icons/email-icon.svg">Connect Email
           </button>
-          <button class="review-btn" id="reviewButton">Review</button>
-        </div>
+          <div class="test-email-container">
+            <input type="email" id="testEmailInput" class="test-email-input" placeholder="Enter your email for review" />
+            <button class="review-btn" id="reviewButton">Review</button>
+          </div>
+	</div>
       </div>
     </section>
     <script src="{{ url_for('static', filename='js/email-config.js') }}"></script>
 
     <!-- Send Section -->
     <section class="card">
-      <h2>Review & Send</h2>
+      <h2>Send</h2>
       <div class="progressbar-box">
-        <p style="margin: 0;">Sending Status</p>
-        <progress class="sending-progressbar" value="32" max="100"> 32% </progress>
+         <p style="margin: 0;">Sending Status</p>
+         <progress id="sendingProgressBar" class="sending-progressbar" value="0" max="100"></progress>
+         <span id="progressLabel">0%</span> <!-- Fallback label -->
       </div>
 
-      <button id="sendDiplomasButton" class="send-btn">Send Diplomas (2)</button>
+      <button id="sendDiplomasButton" class="send-btn">Send Diplomas</button>
     </section>
 
-    <!-- Status Dashboard -->
+    <!-- Status Dashboard >
     <section class="card">
       <h2>Status Dashboard</h2>
       <table class="status-table">
@@ -182,7 +186,7 @@
           </tr>
         </tbody>
       </table>
-    </section>
+    </section-->
   </div>
 
 

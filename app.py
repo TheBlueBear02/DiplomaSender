@@ -26,6 +26,15 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import re
 
+
+import logging
+
+# Suppress Flask's default request logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
+
+
 # Constants
 TEST_NAME = "רוני גבאי"
 TEST_EMAIL = "rony.gabbai@gmail.com"
@@ -35,6 +44,9 @@ WIDTH, HEIGHT = letter
 
 # Initialize Flask app
 app = Flask(__name__)
+# Global variable to store progress
+progress_data = {"progress": 0}
+
 app.secret_key = 'your_secret_key'  # Required for flashing messages
 course_dir = os.path.join(app.root_path, 'static', 'course')
 os.makedirs(course_dir, exist_ok=True)  # Create the directory if it doesn't exist
@@ -58,6 +70,10 @@ def index():
     """
     Render the main page.
     """
+    # Initialize progress
+    #session["progress"] = 0
+    #session.modified = True  # Ensure the session is saved
+
     return render_template('index.html')
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'csv', 'xlsx'}
 
@@ -113,9 +129,27 @@ def upload_recipients():
         flash(f'Recipient list uploaded successfully: {file.filename}')
         return redirect(url_for('index'))
 
+
+
+@app.route('/progress', methods=['GET'])
+def get_progress():
+    global progress_data
+    #print(f"get_progress: {progress_data['progress']}")
+    return jsonify(progress_data)
+    #try:
+    #    progress = session.get("progress", 0)  # Default to 0 if not set
+    #    print(f"get_progress: {progress}")  # Debugging
+    #    return jsonify({"progress": progress})
+    #except Exception as e:
+    #    print(f"Error in /progress endpoint: {e}")
+    #    return jsonify({"error": "Unable to fetch progress"}), 500
+
+
 @app.route('/send_email', methods=['POST'])
 def send_email():
     # Load credentials
+    global progress_data
+
     credentials = load_credentials()
     if not credentials:
         return jsonify({"error": "No valid credentials found. Please connect your email first."}), 400
@@ -133,11 +167,21 @@ def send_email():
             return jsonify({"error": "Invalid JSON payload"}), 400
     subject = data.get('subject', "Your Diploma is Ready!")
     body_template = data.get('body', "Hello, your diploma is attached.")
-
+    # check if this is test mail case - if to exist now it is a test mail address
+    to = data.get('to',None)
     
+    if to: # if to is not None override student by test mail  
+       students = []
+       students.append({"name": TEST_NAME, "email": to, "new": 1, "send": 0})
 
     # Iterate over the students and send emails
     results = []
+    total_students = len(students)
+    sent_emails = 0
+    # Initialize progress
+    session["progress"] = 0
+    session.modified = True  # Ensure the session is saved
+
     for student in students:
         to_email = student.get('email')
         print(f"Sending to email:{to_email}")
@@ -158,8 +202,7 @@ def send_email():
         print(f"pdf_file:{pdf_file}")
         if not pdf_file or not os.path.exists(pdf_file):
             return jsonify({"error": "Uploaded template not found. Please upload a template first."}), 400
- 
-        # Create student diploma       
+         # Create student diploma       
         create_student_diploma(student, test=False, pdf_file=pdf_file,x_pos=x_position,y_pos=y_position)
 
         # Path to the student's diploma PDF file
@@ -211,6 +254,15 @@ def send_email():
             #print(f"message:{message}")
             sent_message = service.users().messages().send(userId='me', body={'raw': raw_message}).execute()
             results.append({"name": student.get('name'), "email": to_email, "message_id": sent_message['id']})
+            # Update progress in session
+            sent_emails += 1
+            progress = int((sent_emails / total_students) * 100)
+            progress_data["progress"] = progress
+            print(f"send progress:{progress}")
+            session["progress"] = progress
+            session.modified = True
+            import time
+            time.sleep(1) #for debug progress bar
         except Exception as e:
             print("Send error")
             results.append({"name": student.get('name'), "email": to_email, "error": str(e)})
