@@ -1,6 +1,8 @@
 Created Vm instance in google
 https://console.cloud.google.com/marketplace/product/google/compute.googleapis.com?project=gendiploma&returnUrl=%2Fcompute%2Finstances%3Fproject%3Dengaged-truth-445518-e7&inv=1&invt=AbpQ4g
 
+
+
 Cheatsheet for activating site
 
 project: GenDiploma
@@ -9,16 +11,17 @@ https://console.cloud.google.com/compute/instancesDetail/zones/us-west1-a/instan
 ## Activate site:
 
 1. ssh it to get terminal
+https://console.cloud.google.com/compute/instances?inv=1&invt=AbpRVw&project=gendiploma
 
-2. activate virtual env
+3. activate virtual env
 source projects/DiplomaSender/ds-env/bin/activate
-3. run the app
+4. run the app
 cd /home/rony_gabbai/projects/DiplomaSender
 python3 app.py 
-4. open site
+5. open site
 https://diplomasender.duckdns.org/
 
-5. In Email body - use {{name}} for name subsituation 
+6. In Email body - use {{name}} for name subsituation 
 
 known issues
 CSV list exported from rav meser
